@@ -105,14 +105,14 @@ int main(int argc, char** argv)
     if (obj_fd < 0) {
         fprintf(stderr, "Failed to open PE file '%s': %s\n",
                 filename, strerror(errno));
-        return false;
+        return -1;
     }
 
     struct stat st;
     if (fstat(obj_fd, &st) != 0 && st.st_size <= 0) {
         fprintf(stderr, "Unable to fstat PE file '%s': %s\n",
                 filename, strerror(errno));
-        return false;
+        return -1;
     }
 
     void* obj_base = mmap(NULL, st.st_size, PROT_READ | PROT_WRITE, MAP_PRIVATE, obj_fd, 0);
