@@ -12,7 +12,7 @@
 #include <stdint.h>
 
 
-#define printhex(description, value) printf("%s: 0x%x\n", description, value)
+#define printhex(description, value) printf("%s: %#x\n", description, value)
 #define printptr(value) printf("p:%p\n", value)
 
 struct PeHeader {
@@ -139,8 +139,8 @@ int main(int argc, char** argv)
     printhex("image base", peOptionalHeader->mImageBase);
 
     uint64_t peOptionalHeaderOffset = (uint64_t) peOptionalHeader - (uint64_t) obj_base + 1;
-    printf("peOptionalHeader offset: %#x\n",  peOptionalHeaderOffset );
-    printf("peOptionalHeader + SizeOfOptionalHeader: %#x \n", peOptionalHeaderOffset + peHeader->mSizeOfOptionalHeader);
+    printhex("peOptionalHeader offset",  peOptionalHeaderOffset);
+    printhex("peOptionalHeader + SizeOfOptionalHeader", peOptionalHeaderOffset + peHeader->mSizeOfOptionalHeader);
 
     int64_t sectionHeaderOffset = peOptionalHeaderOffset + peHeader->mSizeOfOptionalHeader;
     IMAGE_SECTION_HEADER* foobar = (IMAGE_SECTION_HEADER*) ((uint32_t*)obj_base+(sectionHeaderOffset/4));
@@ -151,7 +151,7 @@ int main(int argc, char** argv)
     }
 
 
-    PeSymbol* symbols = (PeSymbol*) ( (int32_t*) obj_base + peHeader->mPointerToSymbolTable/4);
+    PeSymbol* symbols = (PeSymbol*) ((int32_t*) obj_base + peHeader->mPointerToSymbolTable/4);
     for(uint i=0;i<peHeader->mNumberOfSymbols;i++)
     {
 
