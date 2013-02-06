@@ -142,8 +142,8 @@ int main(int argc, char** argv)
     printf("peOptionalHeader offset: %#x\n",  peOptionalHeaderOffset );
     printf("peOptionalHeader + SizeOfOptionalHeader: %#x \n", peOptionalHeaderOffset + peHeader->mSizeOfOptionalHeader);
 
-    int64_t section_header_offset = peOptionalHeaderOffset + peHeader->mSizeOfOptionalHeader;
-    IMAGE_SECTION_HEADER* foobar = (IMAGE_SECTION_HEADER*) ((uint32_t*)obj_base+(section_header_offset/4));
+    int64_t sectionHeaderOffset = peOptionalHeaderOffset + peHeader->mSizeOfOptionalHeader;
+    IMAGE_SECTION_HEADER* foobar = (IMAGE_SECTION_HEADER*) ((uint32_t*)obj_base+(sectionHeaderOffset/4));
 
     for(int i=0;i<peHeader->mNumberOfSections;i++)
     {
