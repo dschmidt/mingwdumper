@@ -79,7 +79,7 @@ struct IMAGE_SECTION_HEADER {
   DWORD Characteristics;
 };
 
-struct PeSymbol
+struct __attribute__ ((__packed__))  PeSymbol
 {
     union {
         char     n_name[8];  /* Symbol Name */
@@ -155,9 +155,23 @@ int main(int argc, char** argv)
     for(uint i=0;i<peHeader->mNumberOfSymbols;i++)
     {
 
-//         if( symbols[i].n_first4bytes == 0)
-//             printf("symbol name: too long, offset %#x\n", symbols[i].n_second4bytes);
-//         else
+        if( symbols[i].n_first4bytes == 0)
+            printf("symbol name: too long, offset %#x\n", symbols[i].n_second4bytes);
+        else
             printf("symbol name:  %s\n", symbols[i].n_name);
     }
+
+
+    //     String Table Offset = File Header.f_symptr + File Header.f_symptr * sizeof( Symbol Table Entry )
+//                         = File Header.f_symptr + File Header.f_symptr * 18
+
+//     uint64_t string_table_offset = (uint64_t) (&(symbols[peHeader->mNumberOfSymbols]) - (uint64_t) obj_base) + 1;
+//     printhex("string_table_offset", string_table_offset);
+//
+//     string_table_offset = (uint64_t) peh->mPointerToSymbolTable + (uint64_t) peh->mNumberOfSymbols * 18;
+//     printhex("string_table_offset based on formula", string_table_offset);
+//
+//
+//     printf("string table: %s\n", ((uint32_t*)obj_base+(string_table_offset)));// symbols[peh->mNumberOfSymbols+1]);
+
 }
